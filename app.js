@@ -8,6 +8,15 @@ var exphbs 		= require('express-handlebars');
 const mysql 	= require('mysql2');
 
 
+//For View/Template Engine
+
+app.set('view engine', 'ejs');
+app.set('views', './app/views')
+// app.engine('hbs', exphbs({
+//     extname: '.hbs'
+// }));
+
+
 
 //For BodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,12 +30,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-//For Handlebars
-app.set('views', './app/views')
-app.engine('hbs', exphbs({
-    extname: '.hbs'
-}));
-app.set('view engine', '.hbs');
+
 
 //Models
 var models = require("./app/models");
