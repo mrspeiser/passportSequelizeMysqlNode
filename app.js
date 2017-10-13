@@ -5,11 +5,12 @@ var session     = require('express-session');
 var bodyParser  = require('body-parser');
 var env 		= require('dotenv').load();
 var exphbs 		= require('express-handlebars');
-const mysql 	= require('mysql2');
+var mysql 	    = require('mysql2');
+var http        = require('http').Server(app);
+var io          = require('socket.io')(http);
 
 
 //For View/Template Engine
-
 app.set('view engine', 'ejs');
 app.set('views', './app/views')
 // app.engine('hbs', exphbs({
@@ -17,14 +18,18 @@ app.set('views', './app/views')
 // }));
 
 
-
 //For BodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
+//For Styles
+app.use(express.static(path.join(__dirname, '/app/public')));
+
+
 // For Passport
 app.use(session({ 
-	secret: 'keyboard cat',
+	secret: 'Awesome Sauce',
 	resave: true, 
 	saveUninitialized:true})); // session secret
 app.use(passport.initialize());
@@ -35,12 +40,15 @@ app.use(passport.session()); // persistent login sessions
 //Models
 var models = require("./app/models");
 
+
 //Routes
 var authRoute = require('./app/routes/auth.js')(app, passport);
+
 
 //load passport strategies
 require('./app/config/passport/passport.js')(passport, models.user);
  
+
 //Sync Database
 models.sequelize.sync().then(function() {
     console.log('Nice! Database looks fine')
@@ -48,14 +56,29 @@ models.sequelize.sync().then(function() {
     console.log(err, "Something went wrong with the Database Update!")
 });
 
-//routes
+
+//Index Route/Routes
 app.get('/', function(req, res) {
-    res.send('Welcome to Passport with Sequelize');
+    res.render('index');
 });
+
+
+
+//Socket.io
+var socket = io.of('/'); 
+
+io.on('connection', function(socket){
+	console.log('a user connected');
+
+	socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
  
  
-app.listen(5000, function(err) {
- 
+
+http.listen(5000, function(err) {
     if (!err)
         console.log("Site is live");
     else console.log(err)

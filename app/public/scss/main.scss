@@ -1,0 +1,45 @@
+@import "functions";
+@import "variables";
+@import "mixins";
+
+
+@include google-font("Alegreya+Sans");
+@include google-font("Titillium+Web");
+@include google-font("Raleway:800");
+
+
+html {
+	margin: 0;
+	padding: 0;
+}
+body {
+  margin: 0;
+ } 
+
+
+h1, h2, h3, h4, h5 {
+	margin: 0;
+}
+
+li {
+	list-style: none;
+	text-decoration: none;
+}	
+
+.row {
+	margin: 0;
+}
+
+form {
+	width: 30%;
+	border: 1px solid black;
+	padding: 10px;
+}
+
+input {
+	margin: 20px 0px;
+}
+
+
+
+
