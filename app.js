@@ -5,6 +5,7 @@ var session     = require('express-session');
 var bodyParser  = require('body-parser');
 var env 		= require('dotenv').load();
 var exphbs 		= require('express-handlebars');
+var path		= require('path');
 var mysql 	    = require('mysql2');
 var http        = require('http').Server(app);
 var io          = require('socket.io')(http);
